@@ -60,7 +60,7 @@ class FuelPassService:
             if vehicle_fuel_type != data.fuel_type:
                 raise ValueError("Fuel type does not match vehicle record")
 
-            existing = await Collection.find_one({"vehicle_id": data.vehicle_id})
+            existing = Collection.find_one({"vehicle_id": data.vehicle_id})
             if existing:
                 raise ValueError("Fuel pass for vehicle already exists")
 
@@ -87,8 +87,8 @@ class FuelPassService:
                 "status": "ACTIVE"
             }
 
-            result = await Collection.insert_one(new_pass)
-            created_pass = await Collection.find_one({"_id": result.inserted_id})
+            result =  Collection.insert_one(new_pass)
+            created_pass =  Collection.find_one({"_id": result.inserted_id})
             return self._format_fuel_pass(created_pass)
         
         except ValueError:
@@ -111,7 +111,7 @@ class FuelPassService:
     #Get_by_id
     async def get_by_id(self, pass_id: str):
         try:
-            fuel_pass = await Collection.find_one({"_id": ObjectId(pass_id)})
+            fuel_pass =  Collection.find_one({"_id": ObjectId(pass_id)})
             return self._format_fuel_pass(fuel_pass)
         except InvalidId:
             raise ValueError("Invalid fuel pass ID")
@@ -127,7 +127,7 @@ class FuelPassService:
             if not update_data:
                 raise ValueError("No fields provided for update")
 
-            result = await Collection.update_one(
+            result =  Collection.update_one(
                 {"_id": ObjectId(pass_id)},
                 {"$set": update_data}
             )
@@ -135,7 +135,7 @@ class FuelPassService:
             if result.matched_count == 0:
                 return None
 
-            updated_fuel_pass = await Collection.find_one({"_id": ObjectId(pass_id)})
+            updated_fuel_pass = Collection.find_one({"_id": ObjectId(pass_id)})
             return self._format_fuel_pass(updated_fuel_pass)
 
         except InvalidId:
@@ -148,7 +148,7 @@ class FuelPassService:
     # Delete
     async def delete_fuel_pass(self, pass_id: str):
         try:
-            result = await Collection.delete_one({"_id": ObjectId(pass_id)})
+            result = Collection.delete_one({"_id": ObjectId(pass_id)})
             return result.deleted_count > 0
         except InvalidId:
             raise ValueError("Invalid fuel pass ID")

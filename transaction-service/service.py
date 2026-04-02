@@ -72,6 +72,7 @@ class TransactionService:
     async def create(self, transaction_data):
         collection = get_collection()
         data = transaction_data.model_dump()
+        data["status"] = "ACTIVE"
 
         # Validate vehicle
         if not await self.validate_vehicle(data["vehicle_id"]):
