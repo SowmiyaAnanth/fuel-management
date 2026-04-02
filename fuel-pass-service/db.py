@@ -19,7 +19,7 @@ if not COLLECTION_NAME:
 
 client = MongoClient(MONGO_URI)
 db = client[DB_NAME]
-owner_collection = db[COLLECTION_NAME]
+Fuel_Collection = db[COLLECTION_NAME]
 
 print("MongoDB Connected")
 print("Collection:", COLLECTION_NAME)
