@@ -1,7 +1,9 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 import httpx
 from typing import Any
+
+from models import ( OwnerCreate, OwnerUpdate, VehicleCreate, VehicleUpdate, FuelPassCreate, FuelPassUpdate, TransactionCreate,TransactionUpdate)
 
 app = FastAPI(title="Fuel Management API Gateway", version="1.0.0")
 
@@ -67,14 +69,12 @@ async def get_owner(owner_id: str):
     return await forward_request("owner", f"/api/owners/{owner_id}", "GET")
 
 @app.post("/gateway/owners")
-async def create_owner(request: Request):
-    body = await request.json()
-    return await forward_request("owner", "/api/owners", "POST", json=body)
+async def create_owner(owner: OwnerCreate):
+    return await forward_request("owner", "/api/owners", "POST", json=owner.model_dump())
 
 @app.put("/gateway/owners/{owner_id}")
-async def update_owner(owner_id: str, request: Request):
-    body = await request.json()
-    return await forward_request("owner", f"/api/owners/{owner_id}", "PUT", json=body)
+async def update_owner(owner_id: str, owner: OwnerUpdate):
+    return await forward_request("owner", f"/api/owners/{owner_id}", "PUT", json=owner.model_dump(exclude_unset=True))
 
 @app.delete("/gateway/owners/{owner_id}")
 async def delete_owner(owner_id: str):
@@ -95,14 +95,12 @@ async def get_vehicles_by_owner(owner_id: str):
     return await forward_request("vehicle", f"/api/vehicles/owner/{owner_id}", "GET")
 
 @app.post("/gateway/vehicles")
-async def create_vehicle(request: Request):
-    body = await request.json()
-    return await forward_request("vehicle", "/api/vehicles", "POST", json=body)
+async def create_vehicle(vehicle: VehicleCreate):
+    return await forward_request("vehicle", "/api/vehicles", "POST", json=vehicle.model_dump())
 
 @app.put("/gateway/vehicles/{vehicle_id}")
-async def update_vehicle(vehicle_id: str, request: Request):
-    body = await request.json()
-    return await forward_request("vehicle", f"/api/vehicles/{vehicle_id}", "PUT", json=body)
+async def update_vehicle(vehicle_id: str, vehicle: VehicleUpdate):
+    return await forward_request("vehicle", f"/api/vehicles/{vehicle_id}", "PUT", json=vehicle.model_dump(exclude_unset=True))
 
 @app.delete("/gateway/vehicles/{vehicle_id}")
 async def delete_vehicle(vehicle_id: str):
@@ -119,14 +117,12 @@ async def get_fuelpass(pass_id: str):
     return await forward_request("fuelpass", f"/api/fuelpasses/{pass_id}", "GET")
 
 @app.post("/gateway/fuelpasses")
-async def create_fuelpass(request: Request):
-    body = await request.json()
-    return await forward_request("fuelpass", "/api/fuelpasses", "POST", json=body)
+async def create_fuelpass(fuelpass: FuelPassCreate):
+    return await forward_request("fuelpass", "/api/fuelpasses", "POST", json=fuelpass.model_dump())
 
 @app.put("/gateway/fuelpasses/{pass_id}")
-async def update_fuelpass(pass_id: str, request: Request):
-    body = await request.json()
-    return await forward_request("fuelpass", f"/api/fuelpasses/{pass_id}", "PUT", json=body)
+async def update_fuelpass(pass_id: str, fuelpass: FuelPassUpdate):
+    return await forward_request("fuelpass", f"/api/fuelpasses/{pass_id}", "PUT", json=fuelpass.model_dump(exclude_unset=True))
 
 @app.delete("/gateway/fuelpasses/{pass_id}")
 async def delete_fuelpass(pass_id: str):
@@ -143,14 +139,12 @@ async def get_transaction(transaction_id: str):
     return await forward_request("transaction", f"/api/transactions/{transaction_id}", "GET")
 
 @app.post("/gateway/transactions")
-async def create_transaction(request: Request):
-    body = await request.json()
-    return await forward_request("transaction", "/api/transactions", "POST", json=body)
+async def create_transaction(transaction: TransactionCreate):
+    return await forward_request("transaction", "/api/transactions", "POST", json=transaction.model_dump())
 
 @app.put("/gateway/transactions/{transaction_id}")
-async def update_transaction(transaction_id: str, request: Request):
-    body = await request.json()
-    return await forward_request("transaction", f"/api/transactions/{transaction_id}", "PUT", json=body)
+async def update_transaction(transaction_id: str, transaction: TransactionUpdate):
+    return await forward_request("transaction", f"/api/transactions/{transaction_id}", "PUT", json=transaction.model_dump(exclude_unset=True))
 
 @app.delete("/gateway/transactions/{transaction_id}")
 async def delete_transaction(transaction_id: str):
