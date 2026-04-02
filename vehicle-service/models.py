@@ -1,6 +1,6 @@
 from pydantic import BaseModel, field_validator
 from typing import Optional, List, Any
-import read_root
+import re
 
 
 ALLOWED_FUEL_TYPES = ["petrol", "diesel", "electric", "hybrid"]

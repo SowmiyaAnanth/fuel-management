@@ -43,7 +43,7 @@ class VehicleService:
             return False
 
     def get_all(self):
-        vehicle = vehicle_collection.find()
+        vehicles = vehicle_collection.find()
         return [self._format_vehicle(v) for v in vehicles]
 
     def get_by_id(self, vehicle_id: str):
